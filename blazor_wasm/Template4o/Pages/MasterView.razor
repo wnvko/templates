@@ -1,0 +1,56 @@
+@page "/"
+@inject DashboardData.DashboardDataService dashboardDataService
+
+<div class="row-layout master-view-container">
+    <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false" Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
+        <IgbColumn Field="FirstName"
+                   Header="FirstName"
+                   HeaderTemplateScript="firstNameHeaderTemplate">
+        </IgbColumn>
+        <IgbColumn Field="LastName" Header="LastName" Editable=true>
+            <BodyTemplate>
+                @(GetCellValue(context)) CT
+            </BodyTemplate>
+        </IgbColumn>
+        <IgbColumn Field="HireDate"
+                   Header="HireDate"
+                   DataType="GridColumnDataType.Date"
+                   Editable=true
+                   BodyTemplateScript="hireDateCellTemplate">
+        </IgbColumn>
+        <IgbColumn Field="HireDate"
+                   Header="HireDate"
+                   DataType="GridColumnDataType.Date"
+                   Editable=true
+                   InlineEditorTemplateScript="hireDateCellEditTemplate">
+        </IgbColumn>
+    </IgbGrid>
+</div>
+
+@code {
+    private DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<DashboardData.AllTeamMembersType>();
+    private int index = 1;
+
+    public string GetCellValue(IgbCellTemplateContext ctx)
+    {
+        var val = ctx.Cell?.Value?.ToString();
+        if (!string.IsNullOrEmpty(val))
+        {
+            return val;
+        }
+        return "SWOLLL..." + this.index++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        dashboardDataAllTeamMembers = await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
+
+        // add more rows in data
+        for (int i = 0; i < 12; i++)
+        {
+            var cache = this.dashboardDataAllTeamMembers.ToList();
+            cache.AddRange(this.dashboardDataAllTeamMembers);
+            this.dashboardDataAllTeamMembers = cache.ToArray();
+        }
+    }
+}
