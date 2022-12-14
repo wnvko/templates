@@ -49,11 +49,8 @@ export default class MasterView extends LitElement {
   }
 
   public gridHireDataCellEditorTemplate = (ctx: any) => { // TODO: ctx: IgxCellEditorTemplateDirective
-    const cellEdit = (e: Event) => {
-      ctx.cell.value = (e.target! as HTMLInputElement).value;
-    };
     return html`
-        <input .value="${ctx.cell?.value}" @change="${(e: Event) => cellEdit(e)}"/>
+        <input .value="${ctx.cell?.value}" @change="${(e: Event) => ctx.cell.value = (e.target! as HTMLInputElement).value}"/>
       `;
   }
 

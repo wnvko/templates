@@ -30,23 +30,17 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script>
         igRegisterScript("hireDateCellTemplate", (ctx) => {
-            var html = window.igTemplating.html;
-            return html`FAST CT ${ctx.cell.value}`
+            return window.igTemplating.html`FAST CT ${ctx.cell.value}`
         }, false);
         igRegisterScript("hireDateCellEditTemplate", (ctx) => {
             cellEdit = (e) => {
                 ctx.cell.value = e.target.value;
             }
-            var html = window.igTemplating.html;
-            return html`<input  value="${ctx.cell?.value}" onchange="cellEdit(event)"/>`
+            return window.igTemplating.html`<input  value="${ctx.cell?.value}" onchange="cellEdit(event)"/>`;
+            //return window.igTemplating.html`<input value="${ctx.cell?.value}" onchange="${e => ctx.cell.value = e.target.value}"/>`; // TODO: does not work inline
         }, false);
         igRegisterScript("firstNameHeaderTemplate", (ctx) => {
-            var html = window.igTemplating.html;
-            if (ctx.column) {
-                return html`HT ${ctx.column.header}`
-            } else {
-                return html`HT нема никой`
-            }
+            return window.igTemplating.html`HT ${ctx.column?.header}`
         }, false);
     </script>
 </body>
