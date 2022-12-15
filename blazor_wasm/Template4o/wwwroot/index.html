@@ -28,21 +28,6 @@
 
     <script src="_content/IgniteUI.Blazor/app.bundle.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script>
-        igRegisterScript("hireDateCellTemplate", (ctx) => {
-            return window.igTemplating.html`FAST CT ${ctx.cell.value}`
-        }, false);
-        igRegisterScript("hireDateCellEditTemplate", (ctx) => {
-            cellEdit = (e) => {
-                ctx.cell.value = e.target.value;
-            }
-            return window.igTemplating.html`<input  value="${ctx.cell?.value}" onchange="cellEdit(event)"/>`;
-            //return window.igTemplating.html`<input value="${ctx.cell?.value}" onchange="${e => ctx.cell.value = e.target.value}"/>`; // TODO: does not work inline
-        }, false);
-        igRegisterScript("firstNameHeaderTemplate", (ctx) => {
-            return window.igTemplating.html`HT ${ctx.column?.header}`
-        }, false);
-    </script>
 </body>
 
 </html>
