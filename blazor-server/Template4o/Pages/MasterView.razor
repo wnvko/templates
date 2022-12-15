@@ -1,0 +1,51 @@
+@page "/"
+@inject DashboardData.DashboardDataService dashboardDataService
+@inject IJSRuntime JS
+
+<div class="row-layout master-view-container">
+    <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false" Width="800px" Height="600px" class="ig-typography grid" master-view-scope>
+        <IgbColumn Field="FirstName"
+                   Header="FirstName"
+                   HeaderTemplateScript="firstNameHeaderTemplate">
+        </IgbColumn>
+        <IgbColumn Field="LastName" Header="LastName" Editable=true>
+            <BodyTemplate>
+                @(GetCellValue(context)) CT
+            </BodyTemplate>
+        </IgbColumn>
+        <IgbColumn Field="HireDate"
+                   Header="HireDate"
+                   DataType="GridColumnDataType.Date"
+                   Editable=true
+                   BodyTemplateScript="hireDateCellTemplate">
+        </IgbColumn>
+        <IgbColumn Field="HireDate"
+                   Header="HireDate"
+                   DataType="GridColumnDataType.Date"
+                   Editable=true
+                   InlineEditorTemplateScript="hireDateCellEditTemplate">
+        </IgbColumn>
+    </IgbGrid>
+</div>
+
+@code {
+    private DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<DashboardData.AllTeamMembersType>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        dashboardDataAllTeamMembers = await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
+    }
+
+    public string GetCellValue(IgbCellTemplateContext ctx)
+    {
+        return ctx.Cell?.Value?.ToString() ?? string.Empty;
+    }
+}
