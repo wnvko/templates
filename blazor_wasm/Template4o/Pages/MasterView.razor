@@ -1,26 +1,32 @@
 @page "/"
-@inject DashboardData.DashboardDataService dashboardDataService
+@using Template4o.DashboardData;
+@inject DashboardDataService dashboardDataService
 @inject IJSRuntime JS
 
 <div class="row-layout master-view-container">
-    <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false" Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
+    <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
+        Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
         <IgbColumn Field="FirstName"
-                   Header="FirstName"
+                   Header="First Name Header Template"
                    HeaderTemplateScript="firstNameHeaderTemplate">
         </IgbColumn>
-        <IgbColumn Field="LastName" Header="LastName" Editable=true>
+        <IgbColumn Field="LastName"
+                   Header="Last Name Inline Edit Template"
+                   Editable=true>
             <BodyTemplate>
-                @(GetCellValue(context)) CT
+                @(context.Cell.Value.ToString() ?? string.Empty) CT
+                @*@(GetCellValue(context)) CT*@
             </BodyTemplate>
         </IgbColumn>
         <IgbColumn Field="HireDate"
-                   Header="HireDate"
+                   Header="Hire Date Two Templates"
                    DataType="GridColumnDataType.Date"
                    Editable=true
-                   BodyTemplateScript="hireDateCellTemplate">
+                   BodyTemplateScript="hireDateCellTemplate"
+                   InlineEditorTemplateScript="hireDateCellEditTemplate">
         </IgbColumn>
         <IgbColumn Field="HireDate"
-                   Header="HireDate"
+                   Header="Hire Date Edit Template"
                    DataType="GridColumnDataType.Date"
                    Editable=true
                    InlineEditorTemplateScript="hireDateCellEditTemplate">
@@ -29,7 +35,7 @@
 </div>
 
 @code {
-    private DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<DashboardData.AllTeamMembersType>();
+    private AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<AllTeamMembersType>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -46,6 +52,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        dashboardDataAllTeamMembers = await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
+        dashboardDataAllTeamMembers =
+            await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
     }
 }
