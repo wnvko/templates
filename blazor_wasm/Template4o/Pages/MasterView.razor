@@ -4,11 +4,21 @@
 @inject IJSRuntime JS
 
 <div class="row-layout master-view-container">
+    @*Change="@((IgbDropdownItemComponentEventArgs e) => { context.Cell.Value = e.Detail.Value; })"*@
     <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
         Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
         <IgbColumn Field="FirstName"
                    Header="First Name Header Template"
+                   Editable=true
                    HeaderTemplateScript="firstNameHeaderTemplate">
+            <InlineEditorTemplate>
+                <IgbSelect Value="@(context.Cell.EditValue.ToString())" Change="@((e) => FirstNameInlineEditorTamplate(e, context))">
+                    @foreach (var item in dashboardDataAllTeamMembers)
+                    {
+                        <IgbSelectItem Value="@item.FirstName">@item.FirstName</IgbSelectItem>
+                    }
+                </IgbSelect>
+            </InlineEditorTemplate>
         </IgbColumn>
         <IgbColumn Field="LastName"
                    Header="Last Name Inline Edit Template"
@@ -35,7 +45,7 @@
 </div>
 
 @code {
-    private AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<AllTeamMembersType>();
+    private Template4o.DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<Template4o.DashboardData.AllTeamMembersType>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -43,6 +53,11 @@
         {
             var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
         }
+    }
+
+    public void FirstNameInlineEditorTamplate(IgbDropdownItemComponentEventArgs e, IgbCellTemplateContext ctx)
+    {
+        ctx.Cell.Value = e.Detail.Value;
     }
 
     public string GetCellValue(IgbCellTemplateContext ctx)
