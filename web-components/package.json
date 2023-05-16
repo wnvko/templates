@@ -21,6 +21,7 @@
     "infragistics-login": "echo \"IMPORTANT: When prompted for username enter in this format `name!!domain.com`\" && npm adduser --registry=https://packages.infragistics.com/npm/js-licensed/ --scope=@infragistics --always-auth"
   },
   "dependencies": {
+    "igniteui-webcomponents": "~4.0.0",
     "@infragistics/igniteui-webcomponents-core": "~4.0.0",
     "@infragistics/igniteui-webcomponents-grids": "~4.0.0",
     "@infragistics/igniteui-webcomponents-inputs": "~4.0.0",
