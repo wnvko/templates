@@ -38,7 +38,8 @@
 </div>
 
 @code {
-    public Template4o.DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<Template4o.DashboardData.AllTeamMembersType>();
+    private Template4o.DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<Template4o.DashboardData.AllTeamMembersType>();
+    private DotNetObjectReference<MasterView> objRef;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -57,5 +58,7 @@
     {
         dashboardDataAllTeamMembers =
             await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
+        objRef = DotNetObjectReference.Create(this);
+        await JS.InvokeAsync<Template4o.DashboardData.AllTeamMembersType[]>("DashboardDataServiceGetAllTeamMembers", objRef, dashboardDataAllTeamMembers);
     }
 }
