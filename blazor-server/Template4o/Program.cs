@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using IgniteUI.Blazor.Controls;
-using Template4o;
 
 using Template4o.DashboardData;
 
@@ -19,7 +16,9 @@ RegisterIgniteUI(builder.Services);
 void RegisterIgniteUI(IServiceCollection services)
 {
     services.AddIgniteUIBlazor(
-        typeof(IgbGridModule)
+        typeof(IgbGridModule),
+        typeof(IgbRatingModule),
+        typeof(IgbSelectModule)
     );
 }
 

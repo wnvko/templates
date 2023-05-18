@@ -17,7 +17,7 @@ igRegisterScript("firstNameInlineEditorTamplate", (ctx) => {
             ${dashboardDataAllTeamMembers.map(item => window.igTemplating.html`
                 <igc-select-item value="${item.firstName}">${item.firstName}</igc-select-item>
             `)}
-        </igx-select>
+        </igc-select>
 `
 }, false);
 

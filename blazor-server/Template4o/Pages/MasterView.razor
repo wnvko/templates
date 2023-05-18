@@ -3,24 +3,43 @@
 @inject IJSRuntime JS
 
 <div class="row-layout master-view-container">
-    <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false" Width="800px" Height="600px" class="ig-typography grid" master-view-scope>
+    <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
+             Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
         <IgbColumn Field="FirstName"
-                   Header="FirstName"
-                   HeaderTemplateScript="firstNameHeaderTemplate">
+                   Header="First Name Header Template"
+                   Editable=true
+                   HeaderTemplateScript="firstNameHeaderTemplate"
+                   InlineEditorTemplateScript="firstNameInlineEditorTamplate">
         </IgbColumn>
-        <IgbColumn Field="LastName" Header="LastName" Editable=true>
+        <IgbColumn Field="LastName"
+                   Header="Last Name Inline Edit Template"
+                   Editable=true>
             <BodyTemplate>
-                @(GetCellValue(context)) CT
+                @(context.Cell.Value.ToString() ?? string.Empty) CT
             </BodyTemplate>
+            @*Does not work - logged here https://github.com/IgniteUI/igniteui-blazor/issues/62*@
+            <InlineEditorTemplate>
+                <IgbSelect Value="@(context.Cell.Value.ToString())" Change="@(e => context.Cell.Value = e.Detail.Value)">
+                    @foreach (var item in dashboardDataAllTeamMembers)
+                    {
+                        <IgbSelectItem Value="@item.FirstName">@item.FirstName</IgbSelectItem>
+                    }
+                </IgbSelect>
+            </InlineEditorTemplate>
+        </IgbColumn>
+        <IgbColumn Field="ID"
+                   Header="ID with JS view template"
+                   BodyTemplateScript="idCellTemplate">
         </IgbColumn>
         <IgbColumn Field="HireDate"
-                   Header="HireDate"
+                   Header="Hire Date Two Templates"
                    DataType="GridColumnDataType.Date"
                    Editable=true
-                   BodyTemplateScript="hireDateCellTemplate">
+                   BodyTemplateScript="hireDateCellTemplate"
+                   InlineEditorTemplateScript="hireDateCellEditTemplate">
         </IgbColumn>
         <IgbColumn Field="HireDate"
-                   Header="HireDate"
+                   Header="Hire Date Edit Template"
                    DataType="GridColumnDataType.Date"
                    Editable=true
                    InlineEditorTemplateScript="hireDateCellEditTemplate">
@@ -30,6 +49,7 @@
 
 @code {
     private DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<DashboardData.AllTeamMembersType>();
+    private DotNetObjectReference<MasterView> objRef;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -37,15 +57,14 @@
         {
             var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
         }
+
+        objRef = DotNetObjectReference.Create(this);
+        await JS.InvokeAsync<Template4o.DashboardData.AllTeamMembersType[]>("DashboardDataServiceGetAllTeamMembers", objRef, dashboardDataAllTeamMembers);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        dashboardDataAllTeamMembers = await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
-    }
-
-    public string GetCellValue(IgbCellTemplateContext ctx)
-    {
-        return ctx.Cell?.Value?.ToString() ?? string.Empty;
+        dashboardDataAllTeamMembers =
+            await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
     }
 }

@@ -4,7 +4,6 @@
 @inject IJSRuntime JS
 
 <div class="row-layout master-view-container">
-    @*Change="@((IgbDropdownItemComponentEventArgs e) => { context.Cell.Value = e.Detail.Value; })"*@
     <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
         Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
         <IgbColumn Field="FirstName"
@@ -18,8 +17,16 @@
                    Editable=true>
             <BodyTemplate>
                 @(context.Cell.Value.ToString() ?? string.Empty) CT
-                @*@(GetCellValue(context)) CT*@
             </BodyTemplate>
+            @*Does not work - logged here https://github.com/IgniteUI/igniteui-blazor/issues/62*@
+            <InlineEditorTemplate>
+                <IgbSelect Value="@(context.Cell.EditValue.ToString())" Change="@(e => context.Cell.Value = e.Detail.Value)">
+                    @foreach (var item in dashboardDataAllTeamMembers)
+                    {
+                        <IgbSelectItem Value="@item.FirstName">@item.FirstName</IgbSelectItem>
+                    }
+                </IgbSelect>
+            </InlineEditorTemplate>
         </IgbColumn>
         <IgbColumn Field="HireDate"
                    Header="Hire Date Two Templates"
@@ -47,18 +54,14 @@
         {
             var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
         }
-    }
 
-    public string GetCellValue(IgbCellTemplateContext ctx)
-    {
-        return ctx.Cell?.Value?.ToString() ?? string.Empty;
+        objRef = DotNetObjectReference.Create(this);
+        await JS.InvokeAsync<Template4o.DashboardData.AllTeamMembersType[]>("DashboardDataServiceGetAllTeamMembers", objRef, dashboardDataAllTeamMembers);
     }
 
     protected override async Task OnInitializedAsync()
     {
         dashboardDataAllTeamMembers =
             await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
-        objRef = DotNetObjectReference.Create(this);
-        await JS.InvokeAsync<Template4o.DashboardData.AllTeamMembersType[]>("DashboardDataServiceGetAllTeamMembers", objRef, dashboardDataAllTeamMembers);
     }
 }
