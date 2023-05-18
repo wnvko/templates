@@ -3,6 +3,7 @@ namespace Template4o.DashboardData;
 
 public class AllTeamMembersType
 {
+    public int ID { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? HireDate { get; set; }
