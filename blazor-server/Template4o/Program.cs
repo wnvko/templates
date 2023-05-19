@@ -18,7 +18,8 @@ void RegisterIgniteUI(IServiceCollection services)
     services.AddIgniteUIBlazor(
         typeof(IgbGridModule),
         typeof(IgbRatingModule),
-        typeof(IgbSelectModule)
+        typeof(IgbSelectModule),
+        typeof(IgbDatePickerModule)
     );
 }
 
