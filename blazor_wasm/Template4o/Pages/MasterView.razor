@@ -1,26 +1,20 @@
 @page "/"
-@using Template4o.DashboardData;
-@inject DashboardDataService dashboardDataService
-@inject IJSRuntime JS
 
 <div class="row-layout master-view-container">
     <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
-        Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
+             Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
         <IgbColumn Field="FirstName"
                    Header="First Name Header Template"
                    Editable=true
-                   HeaderTemplateScript="firstNameHeaderTemplate"
-                   InlineEditorTemplateScript="firstNameInlineEditorTamplate">
-        </IgbColumn>
-        <IgbColumn Field="LastName"
-                   Header="Last Name Inline Edit Template"
-                   Editable=true>
+                   DataType="GridColumnDataType.String">
+            <HeaderTemplate>
+                @(context.Column.Header.ToString()?.ToUpper() ?? string.Empty)
+            </HeaderTemplate>
             <BodyTemplate>
-                @(context.Cell.Value.ToString() ?? string.Empty) CT
+                @(context.Cell.Value.ToString() ?? string.Empty) BT
             </BodyTemplate>
-            @*Does not work - logged here https://github.com/IgniteUI/igniteui-blazor/issues/62*@
             <InlineEditorTemplate>
-                <IgbSelect Value="@(context.Cell.EditValue.ToString())" Change="@(e => context.Cell.Value = e.Detail.Value)">
+                <IgbSelect Value="@(context.Cell.EditValue.ToString())" Change="@((e) => FirstNameOnChange(e, context))">
                     @foreach (var item in dashboardDataAllTeamMembers)
                     {
                         <IgbSelectItem Value="@item.FirstName">@item.FirstName</IgbSelectItem>
@@ -28,40 +22,33 @@
                 </IgbSelect>
             </InlineEditorTemplate>
         </IgbColumn>
+        <IgbColumn Field="LastName"
+                   Header="Last Name Inline Edit Template"
+                   DataType="GridColumnDataType.String"
+                   Editable=true>
+            <BodyTemplate>
+                @(context.Cell.Value.ToString() ?? string.Empty) BT
+            </BodyTemplate>
+            <InlineEditorTemplate>
+                <IgbSelect Value="@(context.Cell.EditValue.ToString())" Change="@((e) => LastNameOnChange(e, context))">
+                    @foreach (var item in dashboardDataAllTeamMembers)
+                    {
+                        <IgbSelectItem Value="@item.LastName">@item.LastName</IgbSelectItem>
+                    }
+                </IgbSelect>
+            </InlineEditorTemplate>
+        </IgbColumn>
         <IgbColumn Field="HireDate"
                    Header="Hire Date Two Templates"
                    DataType="GridColumnDataType.Date"
-                   Editable=true
-                   BodyTemplateScript="hireDateCellTemplate"
-                   InlineEditorTemplateScript="hireDateCellEditTemplate">
-        </IgbColumn>
-        <IgbColumn Field="HireDate"
-                   Header="Hire Date Edit Template"
-                   DataType="GridColumnDataType.Date"
-                   Editable=true
-                   InlineEditorTemplateScript="hireDateCellEditTemplate">
+                   Editable=true>
+            <InlineEditorTemplate>
+                <IgbDateTimeInput Value="@(DateTime.Parse(context.Cell.Value.ToString(), cultureInfo))" 
+                                  Change="@((e) => HireDateOnChange(e, context))"
+                                  InputFormat="dd-MM-yyyy"
+                                  DisplayFormat="mediumDate">
+                </IgbDateTimeInput>
+            </InlineEditorTemplate>
         </IgbColumn>
     </IgbGrid>
 </div>
-
-@code {
-    private Template4o.DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<Template4o.DashboardData.AllTeamMembersType>();
-    private DotNetObjectReference<MasterView> objRef;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
-        }
-
-        objRef = DotNetObjectReference.Create(this);
-        await JS.InvokeAsync<Template4o.DashboardData.AllTeamMembersType[]>("DashboardDataServiceGetAllTeamMembers", objRef, dashboardDataAllTeamMembers);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        dashboardDataAllTeamMembers =
-            await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
-    }
-}
