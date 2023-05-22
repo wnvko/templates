@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardDataService } from '../services/dashboard-data.service';
+import { defineComponents, IgcRatingComponent } from 'igniteui-webcomponents';
+
+defineComponents(IgcRatingComponent);
 
 @Component({
   selector: 'app-master-view',

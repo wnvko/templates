@@ -1,9 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { IgxDateTimeEditorModule, IgxFocusModule, IgxGridModule, IgxInputGroupModule } from '@infragistics/igniteui-angular';
+import { IgxDateTimeEditorModule, IgxFocusModule, IgxGridModule, IgxInputGroupModule, IgxSelectModule } from '@infragistics/igniteui-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MasterViewComponent } from './master-view/master-view.component';
@@ -18,14 +18,16 @@ import { MasterViewComponent } from './master-view/master-view.component';
     HammerModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+    HttpClientModule,
     IgxDateTimeEditorModule,
     IgxFocusModule,
     IgxGridModule,
     IgxInputGroupModule,
-    FormsModule,
-    HttpClientModule
+    IgxSelectModule,
   ],
   providers: [],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

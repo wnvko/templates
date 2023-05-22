@@ -1,13 +1,25 @@
 <igx-grid [data]="dashboardDataAllTeamMembers" primaryKey="FirstName" displayDensity="cosy" width="800px" height="600px"
   class="grid">
-  <igx-column field="FirstName" [groupable]="true">
+  <igx-column field="FirstName" [groupable]="true" [editable]="true">
     <ng-template igxHeader let-column>
       HT {{ column.field | uppercase}}
+    </ng-template>
+    <ng-template igxCellEditor let-cell="cell" let-value>
+      <igx-select [(ngModel)]="cell.editValue">
+        <igx-select-item *ngFor="let item of dashboardDataAllTeamMembers" [value]="item.FirstName">
+          {{ item.FirstName }}
+        </igx-select-item>
+      </igx-select>
     </ng-template>
   </igx-column>
   <igx-column field="LastName">
     <ng-template igxCell let-value>
       CT {{ value | titlecase }}
+    </ng-template>
+  </igx-column>
+  <igx-column field="ID" dataType="number">
+    <ng-template igxCell let-value>
+      <igc-rating value="{{value / 5}}" readOnly="true"></igc-rating>
     </ng-template>
   </igx-column>
   <igx-column field="HireDate" [editable]="true" dataType="dateTime">
