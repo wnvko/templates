@@ -14,6 +14,9 @@
         <IgbColumn Field="LastName"
                    Header="Last Name Inline Edit Template"
                    Editable=true>
+            <HeaderTemplate>
+                IHT @(context.Column.Header)
+            </HeaderTemplate>
             <BodyTemplate>
                 @(context.Cell.Value.ToString() ?? string.Empty) CT
             </BodyTemplate>
