@@ -1,10 +1,10 @@
 import '@infragistics/igniteui-webcomponents-grids/grids/combined.js';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { defineComponents, IgcSelectComponent } from 'igniteui-webcomponents';
+import { defineComponents, IgcRatingComponent, IgcSelectComponent } from 'igniteui-webcomponents';
 import DashboardDataService from '../service/dashboard-data-service';
 
-defineComponents(IgcSelectComponent);
+defineComponents(IgcRatingComponent, IgcSelectComponent);
 
 @customElement('app-master-view')
 export default class MasterView extends LitElement {
@@ -44,8 +44,12 @@ export default class MasterView extends LitElement {
       `
 
   public gridLastNameCellTemplate = (ctx: any) => html`
-      CT ${ctx.cell?.value.toUpperCase()}
+      CT ${ctx.cell?.value?.toUpperCase()}
       `
+
+  public idCellTemplate = (ctx: any) => html`
+    <igc-rating value=${ctx.cell?.value / 5} readonly></igc-rating>
+  `
 
   public gridHireDataCellEditorTemplate = (ctx: any) => html`
         <input .value="${ctx.cell?.value}" @change="${(e: Event) => { ctx.cell.value = (e.target as HTMLInputElement).value; }}"/>
@@ -70,6 +74,7 @@ export default class MasterView extends LitElement {
       <igc-grid .data="${this.dashboardDataAllTeamMembers}" auto-generate="false" primary-key="FirstName" width="800px" height="600px" class="ig-typography grid">
         <igc-column field="FirstName" .headerTemplate="${this.gridFirstNameHeaderTemplate}" .inlineEditorTemplate="${this.gridFirstNameCellEditorTemplate}" editable="true"></igc-column>
         <igc-column field="LastName" .bodyTemplate="${this.gridLastNameCellTemplate}"></igc-column>
+        <igc-column field="Id" .bodyTemplate="${this.idCellTemplate}"></igc-column>
         <igc-column field="HireDate" .inlineEditorTemplate="${this.gridHireDataCellEditorTemplate}" data-type="date" editable="true"></igc-column>
       </igc-grid>
     `;
