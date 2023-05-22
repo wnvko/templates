@@ -52,7 +52,7 @@ export default class MasterView extends LitElement {
   `
 
   public gridHireDataCellEditorTemplate = (ctx: any) => html`
-        <input .value="${ctx.cell?.value}" @change="${(e: Event) => { ctx.cell.value = (e.target as HTMLInputElement).value; }}"/>
+        <input .value="${ctx.cell?.editValue}" @change="${(e: Event) => { ctx.cell.value = (e.target as HTMLInputElement).value; }}"/>
       `
 
   public gridFirstNameCellEditorTemplate = (ctx: any) => html`
