@@ -3,6 +3,9 @@
 igRegisterScript("hireDateCellTemplate", (ctx) => {
     return window.igTemplating.html`FAST CT ${ctx.cell.value}`
 }, false);
+igRegisterScript("idCellTemplate", (ctx) => {
+    return window.igTemplating.html`<igc-rating value=${ctx.cell.value / 5} readonly></igc-rating>`
+}, false);
 igRegisterScript("hireDateCellEditTemplate", (ctx) => {
     return window.igTemplating.html`
         <igc-input .value=${ctx.cell?.value} @igcChange="${e => ctx.cell.value = e.target.value}"></igc-input>
