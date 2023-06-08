@@ -24,6 +24,6 @@ igRegisterScript("firstNameInlineEditorTamplate", (ctx) => {
 `
 }, false);
 
-window.DashboardDataServiceGetAllTeamMembers = (dotNetHelper, items) => {
-    dashboardDataAllTeamMembers = items;
+window.TransferMasterView = (view) => {
+    dashboardDataAllTeamMembers = view.dashboardDataAllTeamMembers;
 }
