@@ -4,13 +4,14 @@
 @inject IJSRuntime JS
 
 <div class="row-layout master-view-container">
-    <IgbGrid Data="dashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
+    <IgbGrid Data="DashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
         Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
         <IgbColumn Field="FirstName"
                    Header="First Name Header Template"
                    Editable=true
                    HeaderTemplateScript="firstNameHeaderTemplate"
-                   InlineEditorTemplateScript="firstNameInlineEditorTamplate">
+                   InlineEditorTemplateScript="firstNameInlineEditorTamplate"
+        >
         </IgbColumn>
         <IgbColumn Field="LastName"
                    Header="Last Name Inline Edit Template"
@@ -24,7 +25,7 @@
             @*Does not work - logged here https://github.com/IgniteUI/igniteui-blazor/issues/62*@
             <InlineEditorTemplate>
                 <IgbSelect Value="@(context.Cell.EditValue.ToString())" Change="@(e => context.Cell.Value = e.Detail.Value)">
-                    @foreach (var item in dashboardDataAllTeamMembers)
+                    @foreach (var item in DashboardDataAllTeamMembers)
                     {
                         <IgbSelectItem Value="@item.FirstName">@item.FirstName</IgbSelectItem>
                     }
@@ -58,8 +59,7 @@
 </div>
 
 @code {
-    private Template4o.DashboardData.AllTeamMembersType[] dashboardDataAllTeamMembers = Array.Empty<Template4o.DashboardData.AllTeamMembersType>();
-    private DotNetObjectReference<MasterView> objRef;
+    public Template4o.DashboardData.AllTeamMembersType[] DashboardDataAllTeamMembers { get; set; } = Array.Empty<Template4o.DashboardData.AllTeamMembersType>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -68,13 +68,12 @@
             var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
         }
 
-        objRef = DotNetObjectReference.Create(this);
-        await JS.InvokeAsync<Template4o.DashboardData.AllTeamMembersType[]>("DashboardDataServiceGetAllTeamMembers", objRef, dashboardDataAllTeamMembers);
+        await JS.InvokeAsync<MasterView>("TransferMasterView", this);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        dashboardDataAllTeamMembers =
-            await this.dashboardDataService.GetAllTeamMembers() ?? dashboardDataAllTeamMembers;
+        DashboardDataAllTeamMembers =
+            await this.dashboardDataService.GetAllTeamMembers() ?? DashboardDataAllTeamMembers;
     }
 }
