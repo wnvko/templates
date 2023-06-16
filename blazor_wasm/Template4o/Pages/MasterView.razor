@@ -15,6 +15,11 @@
         </IgbColumn>
         <IgbColumn Field="LastName"
                    Header="Last Name Inline Edit Template"
+                   Editable=true
+                   InlineEditorTemplateScript="lastNameInlineEditorTamplate">
+        </IgbColumn>
+        <IgbColumn Field="LastName"
+                   Header="Last Name Inline Edit Template"
                    Editable=true>
             <HeaderTemplate>
                 IHT @(context.Column.Header)

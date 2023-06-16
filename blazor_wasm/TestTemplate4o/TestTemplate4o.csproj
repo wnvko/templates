@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="bunit" Version="1.9.8" />
     <PackageReference Include="bunit.core" Version="1.9.8" />
-    <PackageReference Include="IgniteUI.Blazor" Version="22.2.65" />
+    <PackageReference Include="IgniteUI.Blazor" Version="23.1.24" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="Moq" Version="4.18.1" />
     <PackageReference Include="xunit" Version="2.4.1" />

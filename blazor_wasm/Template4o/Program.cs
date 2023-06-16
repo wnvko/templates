@@ -17,6 +17,7 @@ await builder.Build().RunAsync();
 void RegisterIgniteUI(IServiceCollection services)
 {
     services.AddIgniteUIBlazor(
+        typeof(IgbComboModule),
         typeof(IgbGridModule),
         typeof(IgbRatingModule),
         typeof(IgbSelectModule)
