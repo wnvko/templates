@@ -1,11 +1,11 @@
 import { IgcCellTemplateContext, IgcColumnTemplateContext } from '@infragistics/igniteui-webcomponents-grids/grids';
 import '@infragistics/igniteui-webcomponents-grids/grids/combined.js';
-import { defineComponents, IgcRatingComponent, IgcSelectComponent } from 'igniteui-webcomponents';
+import { defineComponents, IgcComboComponent, IgcRatingComponent, IgcSelectComponent } from 'igniteui-webcomponents';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import DashboardDataService from '../service/dashboard-data-service';
 
-defineComponents(IgcRatingComponent, IgcSelectComponent);
+defineComponents(IgcComboComponent, IgcRatingComponent, IgcSelectComponent);
 
 @customElement('app-master-view')
 export default class MasterView extends LitElement {
@@ -26,16 +26,15 @@ export default class MasterView extends LitElement {
   constructor() {
     super();
     const dashboardDataService: DashboardDataService = new DashboardDataService();
-    dashboardDataService.getAllTeamMembers().then((data: any) => {
-      this.dashboardDataAllTeamMembers = data.map((e: any) => {
-        e.HireDate = new Date(e.HireDate);
-        return e;
-      });
-    }, err => console.log(err));
+    this.dashboardDataAllTeamMembers = dashboardDataService.getData('Employees');
+    this.siblings = dashboardDataService.getData('Siblings');
   }
 
   @property({ type: Array })
   private dashboardDataAllTeamMembers: any[] = [];
+
+  @property({ type: Array })
+  private siblings: any[] = [];
 
   public gridFirstNameHeaderTemplate = (ctx: IgcColumnTemplateContext) => html`
       HT ${ctx.column?.field.toUpperCase()}
@@ -54,7 +53,7 @@ export default class MasterView extends LitElement {
       `
 
   public gridFirstNameCellEditorTemplate = (ctx: IgcCellTemplateContext) => html`
-      <igc-select .value="${ctx.cell.editValue}" @igcChange="${(e: any) => { ctx.cell.value = e.detail.value; }}">
+      <igc-select .value="${ctx.cell.editValue}" @igcChange="${(e: any) => { ctx.cell.editValue = e.detail.value; }}">
         ${this.dashboardDataAllTeamMembers?.map((item: any) => html`
           <igc-select-item value="${item.FirstName}">
             ${item.FirstName}
@@ -63,14 +62,25 @@ export default class MasterView extends LitElement {
       </igc-select>
     `
 
+  public gridSiblingsCellTemplate = (ctx: IgcCellTemplateContext) => html`
+    CT ${ctx.cell?.value?.join()}
+    `
+
+  public gridSiblingsCellEditorTemplate = (ctx: IgcCellTemplateContext) => html`
+      <igc-combo .data="${this.dashboardDataAllTeamMembers}" value-key="LastName" display-key="LastName"
+        .value=${ctx.cell.editValue} @igcChange="${(e: any) => { ctx.cell.editValue = e.detail.newValue?.split(', ') }}">
+      </igc-combo>
+  `
+
   render() {
     return html`
       <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
       <link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet'>
       <link rel='stylesheet' href='../../ig-theme.css'>
-      <link rel='stylesheet' href='node_modules/@infragistics/igniteui-webcomponents-grids/grids/themes/light/material.css'>
-      <igc-grid .data="${this.dashboardDataAllTeamMembers}" auto-generate="false" primary-key="FirstName" width="800px" height="600px" class="ig-typography grid">
+      <link rel='stylesheet' href='node_modules/@infragistics/igniteui-webcomponents-grids/grids/themes/light/bootstrap.css'>
+      <igc-grid row-editable .data="${this.dashboardDataAllTeamMembers}" auto-generate="false" primary-key="ID" width="1200px" height="600px" class="ig-typography grid">
         <igc-column field="FirstName" .headerTemplate="${this.gridFirstNameHeaderTemplate}" .inlineEditorTemplate="${this.gridFirstNameCellEditorTemplate}" editable="true"></igc-column>
+        <igc-column field="Siblings" editable="true" .bodyTemplate="${this.gridSiblingsCellTemplate}" .inlineEditorTemplate="${this.gridSiblingsCellEditorTemplate}"></igc-column>
         <igc-column field="LastName" .bodyTemplate="${this.gridLastNameCellTemplate}"></igc-column>
         <igc-column field="ID" .bodyTemplate="${this.idCellTemplate}"></igc-column>
         <igc-column field="HireDate" .inlineEditorTemplate="${this.gridHireDataCellEditorTemplate}" data-type="date" editable="true"></igc-column>
