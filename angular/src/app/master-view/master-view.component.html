@@ -1,6 +1,6 @@
 <igx-grid [data]="dashboardDataAllTeamMembers" primaryKey="FirstName" displayDensity="cosy" width="800px" height="600px"
   class="grid">
-  <igx-column field="FirstName" [groupable]="true" [editable]="true">
+  <igx-column field="FirstName" [editable]="true">
     <ng-template igxHeader let-column>
       HT {{ column.field | uppercase}}
     </ng-template>
@@ -10,6 +10,14 @@
           {{ item.FirstName }}
         </igx-select-item>
       </igx-select>
+    </ng-template>
+  </igx-column>
+  <igx-column field="Department" [editable]="true">
+    <ng-template igxCell let-cell="cell">
+      {{ parse(cell.value) }}
+    </ng-template>
+    <ng-template igxCellEditor let-cell="cell">
+      <igx-combo [data]="departments" [(ngModel)]="cell.editValue"></igx-combo>
     </ng-template>
   </igx-column>
   <igx-column field="LastName">

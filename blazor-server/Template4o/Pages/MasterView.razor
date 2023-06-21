@@ -15,17 +15,17 @@
                    Header="Last Name Inline Edit Template"
                    Editable=true>
             <HeaderTemplate>
-                IHT @(context.Column.Header)
+                IHT @(context.Implicit.Header)
             </HeaderTemplate>
             <BodyTemplate>
-                @(context.Cell.Value.ToString() ?? string.Empty) CT
+                @(context.Implicit.ToString() ?? string.Empty) CT
             </BodyTemplate>
             @*Does not work - logged here https://github.com/IgniteUI/igniteui-blazor/issues/62*@
             <InlineEditorTemplate>
-                <IgbSelect Value="@(context.Cell.Value.ToString())" Change="@(e => context.Cell.Value = e.Detail.Value)">
+                <IgbSelect Value="@(context.Implicit.ToString())" Change="@(e => context.Cell.EditValue = e.Detail.Value)">
                     @foreach (var item in DashboardDataAllTeamMembers)
                     {
-                        <IgbSelectItem Value="@item.FirstName">@item.FirstName</IgbSelectItem>
+                        <IgbSelectItem  Value="@item.FirstName">@item.FirstName</IgbSelectItem>
                     }
                 </IgbSelect>
             </InlineEditorTemplate>
@@ -37,7 +37,7 @@
         <IgbColumn Field="ID"
         Header="ID inline view template">
             <BodyTemplate>
-                <IgbRating Value="@((double)context.Cell.Value / 5)"></IgbRating>
+                <IgbRating Value="@((double)context.Implicit / 5)"></IgbRating>
             </BodyTemplate>
         </IgbColumn>
         <IgbColumn Field="HireDate"
@@ -59,14 +59,15 @@
 @code {
     public DashboardData.AllTeamMembersType[] DashboardDataAllTeamMembers { get; set; } = Array.Empty<DashboardData.AllTeamMembersType>();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool isFirstRender)
     {
-        if (firstRender)
+        if (isFirstRender)
         {
             await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
         }
 
-        await JS.InvokeAsync<MasterView>("TransferMasterView", this);
+        await JS.InvokeAsync<MasterView>("transferMaster_View", this);
+        await base.OnAfterRenderAsync(isFirstRender);
     }
 
     protected override async Task OnInitializedAsync()

@@ -59,16 +59,17 @@
 </div>
 
 @code {
-    public Template4o.DashboardData.AllTeamMembersType[] DashboardDataAllTeamMembers { get; set; } = Array.Empty<Template4o.DashboardData.AllTeamMembersType>();
+    public List<AllTeamMembersType> DashboardDataAllTeamMembers { get; set; } = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool isFirstRender)
     {
-        if (firstRender)
+        if (isFirstRender)
         {
-            var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
+            await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
         }
 
         await JS.InvokeAsync<MasterView>("TransferMasterView", this);
+        await base.OnAfterRenderAsync(isFirstRender);
     }
 
     protected override async Task OnInitializedAsync()

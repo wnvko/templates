@@ -4,11 +4,11 @@ igRegisterScript("hireDateCellTemplate", (ctx) => {
     return window.igTemplating.html`FAST CT ${ctx.cell.value}`
 }, false);
 igRegisterScript("idCellTemplate", (ctx) => {
-    return window.igTemplating.html`<igc-rating value=${ctx.cell.value / 5} readonly></igc-rating>`
+    return window.igTemplating.html`<igc-rating value=${ctx.cell.value / 5} @igcChange="${e => ctx.cell.value = e.detail}"></igc-rating>`
 }, false);
 igRegisterScript("hireDateCellEditTemplate", (ctx) => {
     return window.igTemplating.html`
-        <igc-input .value=${ctx.cell?.value} @igcChange="${e => ctx.cell.value = e.target.value}"></igc-input>
+        <igc-input .value=${ctx.$implicit} @igcChange="${e => ctx.cell.value = e.target.value}"></igc-input>
 `
 }, false);
 igRegisterScript("firstNameHeaderTemplate", (ctx) => {
@@ -16,7 +16,7 @@ igRegisterScript("firstNameHeaderTemplate", (ctx) => {
 }, false);
 igRegisterScript("firstNameInlineEditorTamplate", (ctx) => {
     return window.igTemplating.html`
-        <igc-select value=${ctx.cell?.value} @igcChange="${e => ctx.cell.value = e.detail.value}">
+        <igc-select value=${ctx.cell?.value} @igcChange="${e => ctx.cell.editValue = e.detail.value}">
             ${dashboardDataAllTeamMembers.map(item => window.igTemplating.html`
                 <igc-select-item value="${item.firstName}">${item.firstName}</igc-select-item>
             `)}
@@ -24,6 +24,6 @@ igRegisterScript("firstNameInlineEditorTamplate", (ctx) => {
 `
 }, false);
 
-window.TransferMasterView = (view) => {
+window.transferMaster_View = (view) => {
     dashboardDataAllTeamMembers = view.dashboardDataAllTeamMembers;
 }

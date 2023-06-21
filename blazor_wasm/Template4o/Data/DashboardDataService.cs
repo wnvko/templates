@@ -11,9 +11,9 @@ namespace Template4o.DashboardData
             this.http = http;
         }
 
-        public async Task<AllTeamMembersType[]?> GetAllTeamMembers()
+        public async Task<List<AllTeamMembersType>?> GetAllTeamMembers()
         {
-            return await this.http.GetFromJsonAsync<AllTeamMembersType[]>("https://excel2json.io/api/share/d2d94130-e6aa-4387-437e-08da496bf5f2");
+            return await this.http.GetFromJsonAsync<List<AllTeamMembersType>?>("https://excel2json.io/api/share/d2d94130-e6aa-4387-437e-08da496bf5f2");
         }
     }
 }
