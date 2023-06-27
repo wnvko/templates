@@ -1,5 +1,5 @@
 {
-  "name": "template-4o",
+  "name": "templates",
   "version": "0.0.0",
   "private": true,
   "description": "WebComponents project for Ignite UI CLI",
@@ -10,23 +10,23 @@
   "type": "module",
   "exports": {
     ".": "./dist/src/index.js",
-    "./template-4o.js": "./dist/src/template-4o.js"
+    "./templates.js": "./dist/src/templates.js"
   },
   "scripts": {
     "start": "tsc && concurrently -k -r \"tsc --watch\" \"wds\"",
     "build": "rimraf dist && tsc && rollup -c rollup.config.mjs",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open",
-    "lint": "eslint --ext .js,.ts,.html . --ignore-path .gitignore",
-    "test": "tsc && wtr",
+    "lint": "eslint \"**/*.{js,ts}\" --ignore-path .gitignore",
+    "test": "tsc --project tsconfig.test.json && wtr",
     "infragistics-login": "echo \"IMPORTANT: When prompted for username enter in this format `name!!domain.com`\" && npm adduser --registry=https://packages.infragistics.com/npm/js-licensed/ --scope=@infragistics --always-auth"
   },
   "dependencies": {
-    "igniteui-webcomponents": "~4.2.0",
     "@infragistics/igniteui-webcomponents-core": "~4.2.5",
     "@infragistics/igniteui-webcomponents-grids": "~4.2.5",
     "@infragistics/igniteui-webcomponents-inputs": "~4.2.5",
     "@infragistics/igniteui-webcomponents-layouts": "~4.2.5",
     "@vaadin/router": "^1.7.4",
+    "igniteui-webcomponents": "~4.3.0-alpha.0",
     "lit": "^2.6.1",
     "typescript": "^4.9.4"
   },
@@ -55,19 +55,5 @@
     "rollup-plugin-workbox": "^6.2.0",
     "source-map": "^0.7.4",
     "tslib": "^2.4.1"
-  },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "@open-wc"
-    ],
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "no-unused-vars": "off",
-      "import/no-unresolved": "off",
-      "linebreak-style": "off"
-    }
   }
 }

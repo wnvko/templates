@@ -1,11 +1,13 @@
-import { IgcCellTemplateContext, IgcColumnTemplateContext } from '@infragistics/igniteui-webcomponents-grids/grids';
-import '@infragistics/igniteui-webcomponents-grids/grids/combined.js';
-import { defineComponents, IgcRatingComponent, IgcSelectComponent } from 'igniteui-webcomponents';
-import { css, html, LitElement } from 'lit';
+import { html, css, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import DashboardDataService from '../service/dashboard-data-service';
+import { IgcCellTemplateContext } from '@infragistics/igniteui-webcomponents-grids/grids';
+import { defineComponents, IgcCheckboxComponent, IgcComboComponent, IgcInputComponent, IgcDateTimeInputComponent } from 'igniteui-webcomponents';
+import '@infragistics/igniteui-webcomponents-grids/grids/combined.js';
+import { Friend, Person, ProductsType } from '../static-data/northwind-model';
+import NorthwindService from '../service/Northwind-service';
+import { IgcComboChangeEventArgs } from 'igniteui-webcomponents/components/combo/types';
 
-defineComponents(IgcRatingComponent, IgcSelectComponent);
+defineComponents(IgcCheckboxComponent, IgcComboComponent, IgcInputComponent, IgcDateTimeInputComponent);
 
 @customElement('app-master-view')
 export default class MasterView extends LitElement {
@@ -20,60 +22,72 @@ export default class MasterView extends LitElement {
     .grid {
       min-width: 600px;
       min-height: 300px;
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+    .combo {
+      height: max-content;
     }
   `;
 
   constructor() {
     super();
-    const dashboardDataService: DashboardDataService = new DashboardDataService();
-    dashboardDataService.getAllTeamMembers().then((data: any) => {
-      this.dashboardDataAllTeamMembers = data.map((e: any) => {
-        e.HireDate = new Date(e.HireDate);
-        return e;
-      });
-    }, err => console.log(err));
+    this.northwindProducts = this.northwindService.getData('ProductsType');
+    this.people = this.northwindService.getData('People');
+    this.friends = this.northwindService.getData('Friends');
   }
 
-  @property({ type: Array })
-  private dashboardDataAllTeamMembers: any[] = [];
+  private northwindService: NorthwindService = new NorthwindService();
 
-  public gridFirstNameHeaderTemplate = (ctx: IgcColumnTemplateContext) => html`
-      HT ${ctx.column?.field.toUpperCase()}
-      `
+  @property()
+  private northwindProducts?: ProductsType[];
+  private people?: Person[];
+  private friends?: Friend[];
 
-  public gridLastNameCellTemplate = (ctx: IgcCellTemplateContext) => html`
-      CT ${ctx.cell?.value?.toUpperCase()}
-      `
 
-  public idCellTemplate = (ctx: IgcCellTemplateContext) => html`
-    <igc-rating value=${ctx.cell?.value / 4} readonly></igc-rating>
-  `
+  public comboBodyTemplate = (ctx: IgcCellTemplateContext) => html`
+    <igc-combo .data="${this.friends}" .value="${ctx.cell.value}"
+      value-key="id"
+      display-key="first_name"
+      master_view-scope
+      class="combo">
+    </igc-combo>
+    `
 
-  public gridHireDataCellEditorTemplate = (ctx: IgcCellTemplateContext) => html`
-        <input id="cellEditor" .value="${ctx.cell?.editValue}" @change="${(e: Event) => { ctx.cell.value = (e.target as HTMLInputElement).value; }}"/>
-      `
+  public comboInlineEditorTemplate = (ctx: IgcCellTemplateContext) => {
+    return html`
+      <igc-combo .data="${this.friends}" .value="${ctx.cell.editValue}" @igcChange="${(e: CustomEvent<IgcComboChangeEventArgs>) => ctx.cell.editValue = e.detail.newValue}"
+          value-key="id"
+          display-key="first_name"
+          master_view-scope
+          class="combo">
+      </igc-combo>
+    `;
+  }
 
-  public gridFirstNameCellEditorTemplate = (ctx: IgcCellTemplateContext) => html`
-      <igc-select .value="${ctx.cell.editValue}" @igcChange="${(e: any) => { ctx.cell.value = e.detail.value; }}">
-        ${this.dashboardDataAllTeamMembers?.map((item: any) => html`
-          <igc-select-item value="${item.FirstName}">
-            ${item.FirstName}
-          </igc-select-item>
-        `)}
-      </igc-select>
+  public textInputInlineEditorTemplate = (ctx: IgcCellTemplateContext) => html`
+    <igc-input type="text" .value="${ctx.cell.editValue}" @igcChange="${(e: CustomEvent<string>) => ctx.cell.editValue = e.detail}" master_view-scope class="input"></igc-input>
+    `
+
+  public numberInputInlineEditorTemplate = (ctx: IgcCellTemplateContext) => html`
+    <igc-input type="number" .value="${ctx.cell.editValue}" @igcChange="${(e: CustomEvent<number>) => ctx.cell.editValue = e.detail}" master_view-scope class="input"></igc-input>
+    `
+
+  public dateInputInlineEditorTemplate = (ctx: IgcCellTemplateContext) => html`
+    <igc-date-time-input type="number" .value="${ctx.cell.editValue}" @igcChange="${(e: CustomEvent<Date | null>) => ctx.cell.editValue = e.detail}" master_view-scope class="input"></igc-date-time-input>
     `
 
   render() {
     return html`
-      <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
-      <link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet'>
       <link rel='stylesheet' href='../../ig-theme.css'>
       <link rel='stylesheet' href='node_modules/@infragistics/igniteui-webcomponents-grids/grids/themes/light/material.css'>
-      <igc-grid .data="${this.dashboardDataAllTeamMembers}" auto-generate="false" primary-key="FirstName" width="800px" height="600px" class="ig-typography grid">
-        <igc-column field="FirstName" .headerTemplate="${this.gridFirstNameHeaderTemplate}" .inlineEditorTemplate="${this.gridFirstNameCellEditorTemplate}" editable="true"></igc-column>
-        <igc-column field="LastName" .bodyTemplate="${this.gridLastNameCellTemplate}"></igc-column>
-        <igc-column field="ID" .bodyTemplate="${this.idCellTemplate}"></igc-column>
-        <igc-column field="HireDate" .inlineEditorTemplate="${this.gridHireDataCellEditorTemplate}" data-type="date" editable="true"></igc-column>
+      <igc-grid .data="${this.people}" primary-key="id" row-editable="true" auto-generate="false" class="ig-typography ig-scrollbar grid">
+        <igc-column field="first_name" data-type="string" .inlineEditorTemplate="${this.textInputInlineEditorTemplate}"></igc-column>
+        <igc-column field="last_name" data-type="string" ></igc-column>
+        <igc-column field="friends" .bodyTemplate="${this.comboBodyTemplate}" .inlineEditorTemplate="${this.comboInlineEditorTemplate}"></igc-column>
+        <igc-column field="birthDay" data-type="date" .inlineEditorTemplate="${this.dateInputInlineEditorTemplate}"></igc-column>
+        <igc-column field="hasFriends" data-type="boolean"></igc-column>
+        <igc-column field="age" data-type="number".inlineEditorTemplate="${this.numberInputInlineEditorTemplate}"></igc-column>
       </igc-grid>
     `;
   }

@@ -111,6 +111,7 @@ p {
 
 img, video {
   height: auto;
+  max-width: 100%;
 }
 
 .image_1 {
