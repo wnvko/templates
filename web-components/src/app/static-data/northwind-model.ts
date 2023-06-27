@@ -14,13 +14,13 @@ export interface Person {
 	id: number;
 	first_name: string;
 	last_name: string;
-	friends: number[];
+	friends: string[];
 	birthDay: Date;
 	hasFriends: boolean;
 	age: number;
 }
 export interface Friend {
-	id: number;
+	id: string;
 	first_name: string;
 	last_name: string;
 }
