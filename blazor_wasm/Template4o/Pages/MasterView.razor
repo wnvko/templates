@@ -1,80 +1,42 @@
 @page "/"
-@using Template4o.DashboardData;
-@inject DashboardDataService dashboardDataService
+@using Template4o.Services;
+@using Template4o.Models;
+@inject IDataService dataService
 @inject IJSRuntime JS
 
 <div class="row-layout master-view-container">
-    <IgbGrid Data="DashboardDataAllTeamMembers" PrimaryKey="FirstName" AutoGenerate="false"
-        Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
-        <IgbColumn Field="FirstName"
-                   Header="First Name Header Template"
-                   Editable=true
-                   HeaderTemplateScript="firstNameHeaderTemplate"
-                   InlineEditorTemplateScript="firstNameInlineEditorTamplate"
-        >
-        </IgbColumn>
-        <IgbColumn Field="LastName"
-                   Header="Last Name Inline Edit Template"
-                   Editable=true>
-            <HeaderTemplate>
-                IHT @(context.Column.Header)
-            </HeaderTemplate>
-            <BodyTemplate>
-                @(context.Cell.Value.ToString() ?? string.Empty) CT
-            </BodyTemplate>
-            @*Does not work - logged here https://github.com/IgniteUI/igniteui-blazor/issues/62*@
-            <InlineEditorTemplate>
-                <IgbSelect Value="@(context.Cell.EditValue.ToString())" Change="@(e => context.Cell.Value = e.Detail.Value)">
-                    @foreach (var item in DashboardDataAllTeamMembers)
-                    {
-                        <IgbSelectItem Value="@item.FirstName">@item.FirstName</IgbSelectItem>
-                    }
-                </IgbSelect>
-            </InlineEditorTemplate>
-        </IgbColumn>
-        <IgbColumn Field="ID"
-                   Header="ID with JS view template"
-                   BodyTemplateScript="idCellTemplate">
-        </IgbColumn>
-        <IgbColumn Field="ID"
-                   Header="ID inline view template">
-            <BodyTemplate>
-                <IgbRating Value="@((double)context.Cell.Value / 5)"></IgbRating>
-            </BodyTemplate>
-        </IgbColumn>
-        <IgbColumn Field="HireDate"
-                   Header="Hire Date Two Templates"
-                   DataType="GridColumnDataType.Date"
-                   Editable=true
-                   BodyTemplateScript="hireDateCellTemplate"
-                   InlineEditorTemplateScript="hireDateCellEditTemplate">
-        </IgbColumn>
-        <IgbColumn Field="HireDate"
-                   Header="Hire Date Edit Template"
-                   DataType="GridColumnDataType.Date"
-                   Editable=true
-                   InlineEditorTemplateScript="hireDateCellEditTemplate">
-        </IgbColumn>
+    <IgbGrid Data="people" PrimaryKey="Id" AutoGenerate="false" RowEditable=true Width="1200px" Height="600px" class="ig-typography grid" master-view-scope>
+        <IgbColumn Field="First_Name" DataType=GridColumnDataType.String InlineEditorTemplateScript="textInputInlineEditorTemplate"></IgbColumn>
+        <IgbColumn Field="Last_Name" DataType=GridColumnDataType.String InlineEditorTemplateScript="selectInlineEditorTemplate"></IgbColumn>
+        <IgbColumn Field="Friends" BodyTemplateScript="comboBodyTemplate" InlineEditorTemplateScript="comboInlineEditorTemplate"></IgbColumn>
+        <IgbColumn Field="BirthDay" DataType=GridColumnDataType.Date InlineEditorTemplateScript="dateInputInlineEditorTemplate"></IgbColumn>
+        <IgbColumn Field="HasFriends" DataType="GridColumnDataType.Boolean" InlineEditorTemplateScript="switchInlineEditorTemplate"></IgbColumn>
+        <IgbColumn Field="Age" DataType="GridColumnDataType.Number" InlineEditorTemplateScript="numberInputInlineEditorTemplate"></IgbColumn>
     </IgbGrid>
 </div>
 
 @code {
-    public List<AllTeamMembersType> DashboardDataAllTeamMembers { get; set; } = new();
+    public List<Person> people { get; set; } = new();
+    public List<Friend> friends { get; set; } = new();
+    private IJSObjectReference module;
 
     protected override async Task OnAfterRenderAsync(bool isFirstRender)
     {
         if (isFirstRender)
         {
-            await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/MasterView.razor.js");
+        }
+        if (module != null)
+        {
+            await JS.InvokeAsync<MasterView>("TransferMasterView", this);
         }
 
-        await JS.InvokeAsync<MasterView>("TransferMasterView", this);
         await base.OnAfterRenderAsync(isFirstRender);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        DashboardDataAllTeamMembers =
-            await this.dashboardDataService.GetAllTeamMembers() ?? DashboardDataAllTeamMembers;
+        people = await dataService.GetPeople();
+        friends = await dataService.GetFriends();
     }
 }
