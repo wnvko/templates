@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { IgxComboModule, IgxDateTimeEditorModule, IgxFocusModule, IgxGridModule, IgxInputGroupModule, IgxSelectModule } from '@infragistics/igniteui-angular';
+import { IgxComboModule, IgxDateTimeEditorModule, IgxFocusModule, IgxGridModule, IgxInputGroupModule, IgxRadioComponent, IgxRadioModule, IgxSelectModule } from '@infragistics/igniteui-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MasterViewComponent } from './master-view/master-view.component';
@@ -26,6 +26,7 @@ import { MasterViewComponent } from './master-view/master-view.component';
     IgxGridModule,
     IgxInputGroupModule,
     IgxSelectModule,
+    IgxRadioModule
   ],
   providers: [],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
