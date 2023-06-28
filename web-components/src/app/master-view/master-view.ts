@@ -33,8 +33,12 @@ export default class MasterView extends LitElement {
   constructor() {
     super();
     this.northwindProducts = this.northwindService.getData('ProductsType');
-    this.people = this.northwindService.getData('People');
+    this.people = this.northwindService.getData('PeopleWithFriends');
     this.friends = this.northwindService.getData('Friends');
+    this.people = this.people.map(p => {
+      p.friends = p.friends.map(f => this.friends![f.id - 1]);
+      return p;
+    });
   }
 
   private northwindService: NorthwindService = new NorthwindService();
@@ -47,7 +51,6 @@ export default class MasterView extends LitElement {
 
   public comboBodyTemplate = (ctx: IgcCellTemplateContext) => html`
     <igc-combo .data="${this.friends}" .value="${ctx.cell.value}"
-      value-key="id"
       display-key="first_name"
       master_view-scope
       class="combo">
@@ -56,7 +59,6 @@ export default class MasterView extends LitElement {
 
   public comboInlineEditorTemplate = (ctx: IgcCellTemplateContext) => html`
     <igc-combo .data="${this.friends}" .value="${ctx.cell.editValue}" @igcChange="${(e: CustomEvent<IgcComboChangeEventArgs>) => ctx.cell.editValue = e.detail.newValue}"
-        value-key="id"
         display-key="first_name"
         master_view-scope
         class="combo">
