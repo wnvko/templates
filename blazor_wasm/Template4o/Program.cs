@@ -17,6 +17,7 @@ await builder.Build().RunAsync();
 void RegisterIgniteUI(IServiceCollection services)
 {
     services.AddIgniteUIBlazor(
+        typeof(IgbCalendarModule),
         typeof(IgbCheckboxModule),
         typeof(IgbComboModule),
         typeof(IgbDateTimeInputModule),
