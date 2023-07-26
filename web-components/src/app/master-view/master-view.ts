@@ -5,7 +5,7 @@ import { IgcComboChangeEventArgs } from 'igniteui-webcomponents/components/combo
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import NorthwindService from '../service/Northwind-service';
-import { Friend, Person, ProductsType } from '../static-data/northwind-model';
+import { Friend, Person, PersonWithFriends } from '../static-data/northwind-model';
 
 defineComponents(IgcCalendarComponent, IgcCheckboxComponent, IgcComboComponent, IgcDateTimeInputComponent, IgcInputComponent, IgcSelectComponent, IgcSwitchComponent);
 
@@ -32,39 +32,39 @@ export default class MasterView extends LitElement {
 
   constructor() {
     super();
-    this.northwindProducts = this.northwindService.getData('ProductsType');
-    this.people = this.northwindService.getData('PeopleWithFriends');
+    this.people = this.northwindService.getData('People');
     this.friends = this.northwindService.getData('Friends');
-    this.people = this.people.map(p => {
-      p.friends = p.friends.map(f => this.friends![f.id - 1]);
-      return p;
-    });
+    this.peopleWithFriends = this.northwindService.getData('PeopleWithFriends')
   }
 
   private northwindService: NorthwindService = new NorthwindService();
 
   @property()
-  private northwindProducts?: ProductsType[];
   private people?: Person[];
   private friends?: Friend[];
+  private peopleWithFriends: PersonWithFriends[];
 
 
   public comboBodyTemplate = (ctx: IgcCellTemplateContext) => html`
     <igc-combo .data="${this.friends}" .value="${ctx.cell.value}"
       display-key="first_name"
+      value-key="id"
       master_view-scope
       class="combo">
     </igc-combo>
   `
 
-  public comboInlineEditorTemplate = (ctx: IgcCellTemplateContext) => html`
-    <igc-combo .data="${this.friends}" .value="${ctx.cell.editValue}" @igcChange="${(e: CustomEvent<IgcComboChangeEventArgs>) => ctx.cell.editValue = e.detail.newValue}"
+  public comboInlineEditorTemplate = (ctx: IgcCellTemplateContext) => {
+    console.log(ctx.cell.editValue);
+    return html`
+    <igc-combo .data="${this.friends}" .value="${ctx.cell.editValue}" @igcChange="${(e: CustomEvent<IgcComboChangeEventArgs>) => {console.log(e.detail); ctx.cell.editValue = e.detail.newValue;}}"
         display-key="first_name"
+        value-key="id"
         master_view-scope
         class="combo">
     </igc-combo>
-  `
-
+  `;
+  }
   public selectInlineEditorTemplate = (ctx: IgcCellTemplateContext) => html`
     <igc-select .value="${ctx.cell.editValue}" @igcChange="${(e: any) => ctx.cell.editValue = e.detail.value}" master_view-scope class="select">
       ${this.people!.map(item => html`
