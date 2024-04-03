@@ -1,17 +1,25 @@
 import {
   IgrCalendar,
+  IgrCalendarModule,
   IgrCheckboxBase,
+  IgrCheckboxBaseModule,
   IgrCombo,
   IgrComboChangeEventArgs,
+  IgrComboModule,
   IgrComponentBoolValueChangedEventArgs,
   IgrComponentDataValueChangedEventArgs,
   IgrComponentValueChangedEventArgs,
   IgrDropdown,
+  IgrDropdownModule,
   IgrDropdownItemComponentEventArgs,
   IgrInput,
+  IgrInputModule,
   IgrSelect,
   IgrSelectItem,
-  IgrSwitch
+  IgrSelectItemModule,
+  IgrSelectModule,
+  IgrSwitch,
+  IgrSwitchModule
 } from '@infragistics/igniteui-react';
 import { IgrCellTemplateContext, IgrColumn, IgrGrid, IgrGridModule } from '@infragistics/igniteui-react-grids';
 import '@infragistics/igniteui-react-grids/grids';
@@ -19,7 +27,15 @@ import { useGetFriends, useGetPeople } from '../hooks/northwind-hooks';
 import createClassTransformer from '../style-utils';
 import styles from './master-view.module.css';
 
+IgrCalendarModule.register();
+IgrCheckboxBaseModule.register();
+IgrComboModule.register();
+IgrDropdownModule.register();
 IgrGridModule.register();
+IgrInputModule.register();
+IgrSelectItemModule.register();
+IgrSelectModule.register();
+IgrSwitchModule.register();
 
 export default function MasterView() {
   const classes = createClassTransformer(styles);
