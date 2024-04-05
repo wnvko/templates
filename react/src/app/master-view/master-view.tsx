@@ -41,12 +41,12 @@ export default function MasterView() {
   const classes = createClassTransformer(styles);
   const people = useGetPeople();
   const friends = useGetFriends();
-
+  const uuid = () => crypto.randomUUID();
 
   const textInputInlineEditorTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
     return (
       <>
-        <IgrInput type="text" value={ctx.dataContext.cell.editValue} change={(_s: IgrInput, e: IgrComponentValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrInput>
+        <IgrInput type="text" value={ctx.dataContext.cell.editValue} change={(_s: IgrInput, e: IgrComponentValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail} key={uuid()}></IgrInput>
       </>
     );
   }
@@ -54,12 +54,12 @@ export default function MasterView() {
   const selectInlineEditorTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
     return (
       <>
-        <IgrSelect value={ctx.dataContext.cell.editValue} change={(_s: IgrDropdown, e: IgrDropdownItemComponentEventArgs) => ctx.dataContext.cell.editValue = e.detail.value}>
-          {people!.map((item, i) => (
+        <IgrSelect value={ctx.dataContext.cell.editValue}
+          change={(_s: IgrDropdown, e: IgrDropdownItemComponentEventArgs) => ctx.dataContext.cell.editValue = e.detail.value}>
+          {people!.map((item) => (
             <>
-              <IgrSelectItem value={item.last_name} key={i}>
-
-                {item.last_name}
+              <IgrSelectItem value={item.last_name} key={uuid()}>
+                <span key={uuid()}>{item.last_name}</span>
               </IgrSelectItem>
             </>
           ))}
@@ -92,7 +92,8 @@ export default function MasterView() {
   const calendarInlineEditorTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
     return (
       <>
-        <IgrCalendar value={new Date(ctx.dataContext.cell.editValue)} change={(_s: IgrCalendar, e: IgrComponentDataValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrCalendar>
+        <IgrCalendar value={new Date(ctx.dataContext.cell.editValue)}
+          change={(_s: IgrCalendar, e: IgrComponentDataValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrCalendar>
       </>
     )
   }
@@ -100,7 +101,8 @@ export default function MasterView() {
   const switchInlineEditorTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
     return (
       <>
-        <IgrSwitch checked={ctx.dataContext.cell.editValue} change={(_s: IgrCheckboxBase, e: IgrComponentBoolValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrSwitch>
+        <IgrSwitch checked={ctx.dataContext.cell.editValue}
+          change={(_s: IgrCheckboxBase, e: IgrComponentBoolValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrSwitch>
       </>
     )
   }
@@ -108,7 +110,8 @@ export default function MasterView() {
   const numberInputInlineEditorTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
     return (
       <>
-        <IgrInput type="number" value={ctx.dataContext.cell.editValue} change={(_s: IgrInput, e: IgrComponentValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrInput>
+        <IgrInput type="number" value={ctx.dataContext.cell.editValue}
+          change={(_s: IgrInput, e: IgrComponentValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrInput>
       </>
     )
   }
