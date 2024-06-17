@@ -1,0 +1,242 @@
+[
+	{
+		"id": 1,
+		"first_name": "Delores",
+		"last_name": "Wadelin",
+		"friends": [
+			2,
+			10,
+			9
+		],
+		"birthDay": "1985-11-02T07:54:03.431Z",
+		"hasFriends": true,
+		"age": 37
+	},
+	{
+		"id": 2,
+		"first_name": "Fidela",
+		"last_name": "Edmund",
+		"friends": [
+			2
+		],
+		"birthDay": "1983-03-07T00:40:26.080Z",
+		"hasFriends": false,
+		"age": 40
+	},
+	{
+		"id": 3,
+		"first_name": "Linea",
+		"last_name": "Buckett",
+		"friends": [
+			9,
+			7,
+			3
+		],
+		"birthDay": "1989-05-25T09:01:18.521Z",
+		"hasFriends": false,
+		"age": 34
+	},
+	{
+		"id": 4,
+		"first_name": "Richmond",
+		"last_name": "Albutt",
+		"friends": [
+			9,
+			10
+		],
+		"birthDay": "1990-06-21T10:47:30.051Z",
+		"hasFriends": true,
+		"age": 33
+	},
+	{
+		"id": 5,
+		"first_name": "Elsworth",
+		"last_name": "Wimmer",
+		"friends": [
+			5
+		],
+		"birthDay": "1993-04-22T16:36:29.316Z",
+		"hasFriends": false,
+		"age": 30
+	},
+	{
+		"id": 6,
+		"first_name": "Dannie",
+		"last_name": "Wickliffe",
+		"friends": [
+			5,
+			6
+		],
+		"birthDay": "1982-06-29T12:43:30.361Z",
+		"hasFriends": false,
+		"age": 40
+	},
+	{
+		"id": 7,
+		"first_name": "Celle",
+		"last_name": "Hillitt",
+		"friends": [
+			5
+		],
+		"birthDay": "1986-03-26T17:59:11.359Z",
+		"hasFriends": true,
+		"age": 37
+	},
+	{
+		"id": 8,
+		"first_name": "Illa",
+		"last_name": "Kolczynski",
+		"friends": [
+			5
+		],
+		"birthDay": "1992-06-24T10:50:07.055Z",
+		"hasFriends": false,
+		"age": 31
+	},
+	{
+		"id": 9,
+		"first_name": "Tanney",
+		"last_name": "Canter",
+		"friends": [
+			9,
+			8,
+			7
+		],
+		"birthDay": "1988-01-04T13:08:35.767Z",
+		"hasFriends": false,
+		"age": 35
+	},
+	{
+		"id": 10,
+		"first_name": "Pincas",
+		"last_name": "Elcombe",
+		"friends": [
+			5,
+			4
+		],
+		"birthDay": "1992-09-15T19:36:26.601Z",
+		"hasFriends": true,
+		"age": 30
+	},
+	{
+		"id": 11,
+		"first_name": "Efren",
+		"last_name": "Juszczyk",
+		"friends": [
+			1,
+			9,
+			9
+		],
+		"birthDay": "1985-10-27T08:06:01.828Z",
+		"hasFriends": false,
+		"age": 37
+	},
+	{
+		"id": 12,
+		"first_name": "Court",
+		"last_name": "Antusch",
+		"friends": [
+			4
+		],
+		"birthDay": "1998-02-06T21:34:21.345Z",
+		"hasFriends": false,
+		"age": 25
+	},
+	{
+		"id": 13,
+		"first_name": "Melinda",
+		"last_name": "Sperring",
+		"friends": [
+			8,
+			5,
+			10
+		],
+		"birthDay": "1998-01-19T10:13:07.116Z",
+		"hasFriends": true,
+		"age": 25
+	},
+	{
+		"id": 14,
+		"first_name": "Zeke",
+		"last_name": "Brosio",
+		"friends": [
+			4
+		],
+		"birthDay": "1982-07-01T10:48:56.266Z",
+		"hasFriends": false,
+		"age": 40
+	},
+	{
+		"id": 15,
+		"first_name": "Robb",
+		"last_name": "Wadforth",
+		"friends": [
+			3,
+			7
+		],
+		"birthDay": "1990-01-24T19:23:29.841Z",
+		"hasFriends": false,
+		"age": 33
+	},
+	{
+		"id": 16,
+		"first_name": "Kevina",
+		"last_name": "Kupka",
+		"friends": [
+			4,
+			10,
+			7
+		],
+		"birthDay": "1996-07-02T00:49:35.754Z",
+		"hasFriends": true,
+		"age": 26
+	},
+	{
+		"id": 17,
+		"first_name": "Eba",
+		"last_name": "Cavilla",
+		"friends": [
+			4
+		],
+		"birthDay": "1995-05-03T10:30:20.866Z",
+		"hasFriends": false,
+		"age": 28
+	},
+	{
+		"id": 18,
+		"first_name": "Becca",
+		"last_name": "Cacacie",
+		"friends": [
+			5,
+			4,
+			8
+		],
+		"birthDay": "1998-02-24T07:20:18.866Z",
+		"hasFriends": false,
+		"age": 25
+	},
+	{
+		"id": 19,
+		"first_name": "Otis",
+		"last_name": "Millins",
+		"friends": [
+			1,
+			6,
+			6
+		],
+		"birthDay": "1989-10-17T18:28:22.869Z",
+		"hasFriends": true,
+		"age": 33
+	},
+	{
+		"id": 20,
+		"first_name": "Rebecca",
+		"last_name": "Huffy",
+		"friends": [
+			10
+		],
+		"birthDay": "1996-11-27T01:11:08.293Z",
+		"hasFriends": false,
+		"age": 26
+	}
+]
