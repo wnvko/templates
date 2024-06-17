@@ -1,8 +1,11 @@
+import { Friend } from '../models/northwind/friend';
+import { Person } from '../models/northwind/person';
+import { PersonWithFriends } from '../models/northwind/person-with-friends';
 import { getPeople, getPeopleWithFriends, getFriends } from '../services/northwind';
 import { useEffect, useState } from 'react';
 
 export const useGetPeople = () => {
-	const [People, setPeople] = useState([]);
+	const [people, setPeople] = useState<Person[]>([]);
 
 	useEffect(() => {
 		let ignore = false;
@@ -17,11 +20,11 @@ export const useGetPeople = () => {
 		}
 	}, []);
 
-	return People;
+	return people;
 }
 
 export const useGetPeopleWithFriends = () => {
-	const [PeopleWithFriends, setPeopleWithFriends] = useState([]);
+	const [peopleWithFriends, setPeopleWithFriends] = useState<PersonWithFriends[]>([]);
 
 	useEffect(() => {
 		let ignore = false;
@@ -36,11 +39,11 @@ export const useGetPeopleWithFriends = () => {
 		}
 	}, []);
 
-	return PeopleWithFriends;
+	return peopleWithFriends;
 }
 
 export const useGetFriends = () => {
-	const [Friends, setFriends] = useState([]);
+	const [friends, setFriends] = useState<Friend[]>([]);
 
 	useEffect(() => {
 		let ignore = false;
@@ -55,5 +58,5 @@ export const useGetFriends = () => {
 		}
 	}, []);
 
-	return Friends;
+	return friends;
 }

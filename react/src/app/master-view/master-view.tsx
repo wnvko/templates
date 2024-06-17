@@ -1,17 +1,11 @@
 import {
   IgrCalendar,
   IgrCalendarModule,
-  IgrCheckboxBase,
   IgrCheckboxBaseModule,
   IgrCombo,
-  IgrComboChangeEventArgs,
   IgrComboModule,
-  IgrComponentBoolValueChangedEventArgs,
-  IgrComponentDataValueChangedEventArgs,
   IgrComponentValueChangedEventArgs,
-  IgrDropdown,
   IgrDropdownModule,
-  IgrDropdownItemComponentEventArgs,
   IgrInput,
   IgrInputModule,
   IgrSelect,
@@ -55,10 +49,10 @@ export default function MasterView() {
     return (
       <>
         <IgrSelect value={ctx.dataContext.cell.editValue}
-          change={(_s: IgrDropdown, e: IgrDropdownItemComponentEventArgs) => ctx.dataContext.cell.editValue = e.detail.value}>
+          change={(_s, e) => ctx.dataContext.cell.editValue = e.detail.value}>
           {people!.map((item) => (
             <>
-              <IgrSelectItem value={item.last_name} key={uuid()}>
+              <IgrSelectItem value={item.last_name} key={item.id}>
                 <span key={uuid()}>{item.last_name}</span>
               </IgrSelectItem>
             </>
@@ -81,7 +75,7 @@ export default function MasterView() {
       <>
         <IgrCombo data={friends}
           value={ctx.dataContext.cell.value}
-          change={(_s: IgrCombo, e: IgrComboChangeEventArgs) => ctx.dataContext.cell.editValue = e.detail.newValue}
+          change={(_s, e) => ctx.dataContext.cell.editValue = e.detail.newValue}
           displayKey="first_name"
           valueKey="id">
         </IgrCombo>
@@ -93,7 +87,7 @@ export default function MasterView() {
     return (
       <>
         <IgrCalendar value={new Date(ctx.dataContext.cell.editValue)}
-          change={(_s: IgrCalendar, e: IgrComponentDataValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrCalendar>
+          change={(_s, e) => ctx.dataContext.cell.editValue = e.detail}></IgrCalendar>
       </>
     )
   }
@@ -102,7 +96,7 @@ export default function MasterView() {
     return (
       <>
         <IgrSwitch checked={ctx.dataContext.cell.editValue}
-          change={(_s: IgrCheckboxBase, e: IgrComponentBoolValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrSwitch>
+          change={(_s, e) => ctx.dataContext.cell.editValue = e.detail}></IgrSwitch>
       </>
     )
   }
@@ -111,7 +105,7 @@ export default function MasterView() {
     return (
       <>
         <IgrInput type="number" value={ctx.dataContext.cell.editValue}
-          change={(_s: IgrInput, e: IgrComponentValueChangedEventArgs) => ctx.dataContext.cell.editValue = e.detail}></IgrInput>
+          change={(_s, e) => ctx.dataContext.cell.editValue = e.detail}></IgrInput>
       </>
     )
   }
